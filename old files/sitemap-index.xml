@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+           <!-- Comprehensive Sitemap - All URLs (Fixed) -->
+         <sitemap>
+           <loc>https://www.namesilo.com/sitemap-comprehensive-fixed.xml</loc>
+           <lastmod>2025-01-27T10:00:00Z</lastmod>
+         </sitemap>
+
+           <!-- Comprehensive Sitemap - All URLs (Legacy) -->
+         <sitemap>
+           <loc>https://www.namesilo.com/sitemap-comprehensive.xml</loc>
+           <lastmod>2025-01-27T10:00:00Z</lastmod>
+         </sitemap>
+
+         <!-- Main Sitemap - Core Business Pages -->
+         <sitemap>
+           <loc>https://www.namesilo.com/sitemap-main.xml</loc>
+           <lastmod>2025-01-27T10:00:00Z</lastmod>
+         </sitemap>
+
+  <!-- AI-Optimized Sitemap - Enhanced for AI Discovery -->
+  <sitemap>
+    <loc>https://www.namesilo.com/sitemap-ai-optimized.xml</loc>
+    <lastmod>2025-01-27T10:00:00Z</lastmod>
+  </sitemap>
+
+  <!-- Blog Sitemap - Content for Semantic Search -->
+  <sitemap>
+    <loc>https://www.namesilo.com/sitemap-blog.xml</loc>
+    <lastmod>2025-01-27T10:00:00Z</lastmod>
+  </sitemap>
+
+  <!-- Support Sitemap - Help Content for AI Understanding -->
+  <sitemap>
+    <loc>https://www.namesilo.com/sitemap-support.xml</loc>
+    <lastmod>2025-01-27T10:00:00Z</lastmod>
+  </sitemap>
+
+  <!-- Tools Sitemap - Interactive Services for AI Agents -->
+  <sitemap>
+    <loc>https://www.namesilo.com/sitemap-tools.xml</loc>
+    <lastmod>2025-01-27T10:00:00Z</lastmod>
+  </sitemap>
+
+  <!-- RSS Feed for Dynamic Content -->
+  <sitemap>
+    <loc>https://www.namesilo.com/auction_rss.php</loc>
+    <lastmod>2025-01-27T10:00:00Z</lastmod>
+  </sitemap>
+
+</sitemapindex> 

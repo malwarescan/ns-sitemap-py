@@ -1,0 +1,73 @@
+User-agent: *
+Allow: /
+
+# AI Agent Optimization - Clear crawling instructions for AI systems
+User-agent: GPTBot
+Allow: /
+Crawl-delay: 1
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Omgilibot
+Allow: /
+
+# Google AI Agents
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Bing AI Agents
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block AI training for sensitive content
+Disallow: /admin/
+Disallow: /private/
+Disallow: /internal/
+Disallow: /api/
+Disallow: /login
+Disallow: /sign-up
+Disallow: /checkout/
+Disallow: /payment/
+Disallow: /account/
+Disallow: /billing/
+
+# Allow AI access to public content and tools
+Allow: /blog/
+Allow: /support/
+Allow: /domain/
+Allow: /hosting/
+Allow: /email/
+Allow: /ssl/
+Allow: /Marketplace
+Allow: /pricing/
+Allow: /whois
+Allow: /tools/
+Allow: /api-reference
+
+       # Sitemap locations for AI discovery
+       Sitemap: https://www.namesilo.com/sitemap-index.xml
+       Sitemap: https://www.namesilo.com/sitemap-comprehensive-fixed.xml
+       Sitemap: https://www.namesilo.com/sitemap-ai-optimized.xml
+Sitemap: https://www.namesilo.com/sitemap-blog.xml
+Sitemap: https://www.namesilo.com/auction_rss.php
+
+# AI Overview JSON for transparency
+Sitemap: https://www.namesilo.com/.well-known/ai-overview.json
+
+# Crawl delay for AI agents to prevent server overload
+Crawl-delay: 1 

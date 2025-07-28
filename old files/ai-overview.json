@@ -1,0 +1,450 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NameSilo AI Overview",
+  "description": "Comprehensive overview of AI systems and practices at NameSilo.com, designed for transparency and compliance with global AI regulations.",
+  "schemaVersion": "1.0.0",
+  "lastUpdated": "2025-01-27T10:00:00Z",
+  "organizationDetails": {
+    "name": "NameSilo, LLC",
+    "website": "https://www.namesilo.com/",
+    "contactEmail": "ai-transparency@namesilo.com",
+    "aiGovernancePolicyUrl": "https://www.namesilo.com/support/v2/articles/policies/terms-and-conditions"
+  },
+  "aiSystems": [
+    {
+      "systemId": "domain-ai-generator-v1",
+      "systemName": "Domain Name AI Generator",
+      "description": "AI-powered domain name suggestion and availability checking system that assists users in finding suitable domain names through intelligent keyword analysis and real-time availability verification.",
+      "intendedPurpose": "To enhance user experience by providing intelligent domain name suggestions and real-time availability checking, reducing the time and effort required for domain discovery.",
+      "deploymentStatus": "production",
+      "systemUrl": "https://www.namesilo.com/domain/search-domains/ai",
+      "aiModelsUsed": [
+        {
+          "modelName": "Domain Suggestion Engine",
+          "modelVersion": "2.1.0",
+          "developer": "NameSilo AI Team",
+          "intendedPurpose": "Generate relevant domain name suggestions based on user input keywords and industry context",
+          "architectureType": "Large Language Model with Domain-Specific Training",
+          "trainingDataDescription": "Proprietary NameSilo domain registration data (2020-2024), industry keyword databases, and semantic understanding models trained on domain naming patterns",
+          "performanceMetrics": [
+            {
+              "metricName": "Suggestion Relevance Score",
+              "value": 0.87,
+              "context": "Overall performance across all user queries"
+            },
+            {
+              "metricName": "Availability Accuracy",
+              "value": 0.99,
+              "context": "Real-time domain availability checking accuracy"
+            },
+            {
+              "metricName": "Average Response Time",
+              "value": "1.2 seconds",
+              "context": "Time from user input to suggestion generation"
+            }
+          ],
+          "limitations": [
+            "May generate suggestions that are already registered",
+            "Limited to common TLDs and may not suggest premium domains",
+            "Suggestions may not account for trademark conflicts"
+          ],
+          "ethicalConsiderations": [
+            "Risk of suggesting domains that infringe on existing trademarks",
+            "Potential bias in suggestions based on training data demographics"
+          ],
+          "biasAssessment": "Regular audits conducted to ensure suggestions are diverse and representative across different industries and user demographics. Mitigation includes balanced training datasets and human oversight of suggestion quality."
+        }
+      ],
+      "dataGovernance": {
+        "dataCollectedCategories": [
+          "User-provided keywords and search terms",
+          "Industry context and business type information",
+          "User interaction patterns with suggestions",
+          "Domain availability check results"
+        ],
+        "dataCollectionMethods": [
+          "Direct user input through search interface",
+          "Automated logging of user interactions",
+          "Real-time domain availability API calls"
+        ],
+        "dataUsagePurpose": "AI model training and refinement, personalization of domain suggestions, system performance optimization, and user experience improvement",
+        "privacyMeasures": [
+          "Data anonymization for training purposes",
+          "Encryption of user search queries",
+          "No storage of personal identifiable information",
+          "Regular data retention audits"
+        ],
+        "userConsentMechanism": "Implied consent through use of domain search services, with clear privacy policy disclosure"
+      },
+      "humanOversight": {
+        "mechanism": "Regular review of AI-generated suggestions by domain experts, quality assurance monitoring, and user feedback analysis",
+        "interventionPoints": [
+          "Manual review of high-value domain suggestions",
+          "Override capabilities for trademark-sensitive suggestions",
+          "Human oversight of system performance metrics"
+        ]
+      },
+      "complianceDetails": [
+        {
+          "regulation": "EU AI Act",
+          "status": "In Progress",
+          "notes": "Classified as limited-risk AI system, implementing transparency requirements and human oversight measures"
+        },
+        {
+          "regulation": "US AI Executive Orders",
+          "status": "Compliant",
+          "notes": "Adheres to safety and security guidelines for AI systems"
+        }
+      ]
+    },
+    {
+      "systemId": "tld-trust-analyzer-v1",
+      "systemName": "TLD Trust and Contextual Learning System",
+      "description": "AI system that analyzes and interprets the credibility and purpose of domains based on their Top-Level Domain (TLD) context, influencing how both humans and AI-powered systems perceive domain trustworthiness.",
+      "intendedPurpose": "Enhance domain credibility assessment, improve SEO through TLD context understanding, and provide trust signals for domain evaluation",
+      "deploymentStatus": "production",
+      "systemUrl": "https://www.namesilo.com/blog/en/domain-names/tlds-as-tools-of-influence-a-new-era-of-geopolitical-strategy",
+      "aiModelsUsed": [
+        {
+          "modelName": "TLD Trust Classifier",
+          "modelVersion": "1.3.2",
+          "developer": "NameSilo Security Team",
+          "intendedPurpose": "Analyze TLD credibility and provide trustworthiness assessments",
+          "architectureType": "Semantic Understanding Model (BERT-based)",
+          "trainingDataDescription": "Historical spam patterns, user behavior metrics, TLD reputation data, and semantic context analysis from 2019-2024",
+          "performanceMetrics": [
+            {
+              "metricName": "Trust Classification Accuracy",
+              "value": 0.91,
+              "context": "Overall accuracy in identifying trustworthy vs. suspicious TLDs"
+            },
+            {
+              "metricName": "False Positive Rate",
+              "value": 0.08,
+              "context": "Rate of legitimate TLDs incorrectly flagged as suspicious"
+            }
+          ],
+          "limitations": [
+            "May incorrectly flag legitimate new TLDs as suspicious",
+            "Limited historical data for newer TLDs",
+            "Cultural bias in trust assessment across different regions"
+          ],
+          "ethicalConsiderations": [
+            "Risk of unfairly penalizing legitimate domains from certain TLDs",
+            "Potential for reinforcing existing biases in domain trust assessment"
+          ],
+          "biasAssessment": "Continuous monitoring for regional and cultural biases, with regular updates to training data to ensure fair representation of all TLDs and regions."
+        }
+      ],
+      "dataGovernance": {
+        "dataCollectedCategories": [
+          "TLD registration and usage patterns",
+          "Spam and abuse reports",
+          "User behavior metrics (CTR, dwell time)",
+          "Historical domain reputation data"
+        ],
+        "dataCollectionMethods": [
+          "Automated monitoring of domain registration patterns",
+          "Analysis of abuse reports and security incidents",
+          "User interaction tracking and analytics"
+        ],
+        "dataUsagePurpose": "TLD trust assessment, spam pattern detection, security threat analysis, and user protection",
+        "privacyMeasures": [
+          "Aggregated data analysis to prevent individual domain identification",
+          "Secure storage of threat intelligence data",
+          "Regular data retention and deletion protocols"
+        ],
+        "userConsentMechanism": "Service-level consent through domain registration and hosting agreements"
+      },
+      "humanOversight": {
+        "mechanism": "Security team oversight of trust assessments, manual review of flagged domains, and regular system performance evaluation",
+        "interventionPoints": [
+          "Manual review of domains flagged by the trust system",
+          "Override capabilities for legitimate domains incorrectly flagged",
+          "Regular assessment of system accuracy and bias"
+        ]
+      },
+      "complianceDetails": [
+        {
+          "regulation": "EU AI Act",
+          "status": "In Progress",
+          "notes": "Implementing transparency requirements for AI-based security systems"
+        }
+      ]
+    },
+    {
+      "systemId": "content-seo-assistant-v1",
+      "systemName": "AI Content and SEO Assistant",
+      "description": "AI-powered content generation and SEO optimization system that assists in creating marketing copy, blog content, and meta descriptions while ensuring search engine optimization best practices.",
+      "intendedPurpose": "Generate marketing copy, blog outlines, meta descriptions, and optimize content for search engines while maintaining quality and relevance",
+      "deploymentStatus": "production",
+      "systemUrl": "https://www.namesilo.com/blog",
+      "aiModelsUsed": [
+        {
+          "modelName": "Content Generation Engine",
+          "modelVersion": "3.0.1",
+          "developer": "NameSilo Marketing Team",
+          "intendedPurpose": "Generate SEO-optimized content and marketing copy",
+          "architectureType": "Large Language Model with SEO-Specific Training",
+          "trainingDataDescription": "NameSilo blog content, industry best practices, SEO guidelines, and high-performing marketing copy from 2020-2024",
+          "performanceMetrics": [
+            {
+              "metricName": "Content Quality Score",
+              "value": 0.85,
+              "context": "Overall quality assessment of generated content"
+            },
+            {
+              "metricName": "SEO Optimization Score",
+              "value": 0.92,
+              "context": "Effectiveness of SEO optimization in generated content"
+            }
+          ],
+          "limitations": [
+            "May generate factual inaccuracies on complex topics",
+            "Requires human review and editing for final publication",
+            "Limited creativity in content generation"
+          ],
+          "ethicalConsiderations": [
+            "Risk of generating misleading or inaccurate information",
+            "Potential for creating low-quality content that could harm SEO",
+            "Need for clear disclosure of AI-generated content"
+          ],
+          "biasAssessment": "Regular content quality audits, human oversight of all generated content, and adherence to E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness) principles."
+        }
+      ],
+      "dataGovernance": {
+        "dataCollectedCategories": [
+          "Text prompts and target keywords",
+          "Competitor content analysis",
+          "SEO performance metrics",
+          "User engagement data"
+        ],
+        "dataCollectionMethods": [
+          "Direct input from content creators",
+          "Automated analysis of competitor content",
+          "SEO performance tracking and analytics"
+        ],
+        "dataUsagePurpose": "Content generation, SEO optimization, performance analysis, and content strategy improvement",
+        "privacyMeasures": [
+          "No collection of personal user data for content generation",
+          "Secure storage of content creation prompts",
+          "Regular deletion of temporary content drafts"
+        ],
+        "userConsentMechanism": "Internal use only - no external user consent required"
+      },
+      "humanOversight": {
+        "mechanism": "Mandatory human review and editing of all AI-generated content before publication, quality assurance processes, and editorial oversight",
+        "interventionPoints": [
+          "Manual review and editing of all generated content",
+          "Fact-checking of AI-generated information",
+          "Quality control before publication"
+        ]
+      },
+      "complianceDetails": [
+        {
+          "regulation": "EU AI Act",
+          "status": "Compliant",
+          "notes": "AI-generated content clearly labeled and subject to human oversight"
+        }
+      ]
+    },
+    {
+      "systemId": "hosting-ai-engine-v1",
+      "systemName": "Adaptive Hosting AI Engine",
+      "description": "AI-powered web hosting optimization system that provides predictive resource scaling, automated problem resolution, enhanced security, and optimized content delivery for hosted websites.",
+      "intendedPurpose": "Predictive resource scaling, automated problem resolution, enhanced security monitoring, and optimized content delivery for improved website performance",
+      "deploymentStatus": "production",
+      "systemUrl": "https://www.namesilo.com/hosting",
+      "aiModelsUsed": [
+        {
+          "modelName": "Resource Prediction Engine",
+          "modelVersion": "2.0.3",
+          "developer": "NameSilo Infrastructure Team",
+          "intendedPurpose": "Predict resource needs and optimize hosting performance",
+          "architectureType": "Machine Learning with Time Series Analysis",
+          "trainingDataDescription": "Historical hosting usage patterns, traffic fluctuations, application behavior data, and performance metrics from 2019-2024",
+          "performanceMetrics": [
+            {
+              "metricName": "Resource Prediction Accuracy",
+              "value": 0.89,
+              "context": "Accuracy of resource usage predictions"
+            },
+            {
+              "metricName": "Uptime Improvement",
+              "value": "99.7%",
+              "context": "Website uptime with AI optimization"
+            },
+            {
+              "metricName": "Response Time Improvement",
+              "value": "35%",
+              "context": "Average improvement in website response times"
+            }
+          ],
+          "limitations": [
+            "May not accurately predict sudden traffic spikes",
+            "Limited effectiveness for highly dynamic workloads",
+            "Requires historical data for accurate predictions"
+          ],
+          "ethicalConsiderations": [
+            "Ensuring fair resource allocation across all hosted websites",
+            "Preventing discrimination in service quality based on usage patterns"
+          ],
+          "biasAssessment": "Regular monitoring to ensure fair resource allocation, with safeguards against preferential treatment based on usage patterns or customer tier."
+        }
+      ],
+      "dataGovernance": {
+        "dataCollectedCategories": [
+          "Website usage patterns and traffic data",
+          "Application performance metrics",
+          "Server resource utilization",
+          "Security threat intelligence"
+        ],
+        "dataCollectionMethods": [
+          "Automated monitoring of hosting infrastructure",
+          "Real-time performance tracking",
+          "Security event logging and analysis"
+        ],
+        "dataUsagePurpose": "Resource optimization, performance monitoring, security threat detection, and service improvement",
+        "privacyMeasures": [
+          "Aggregated data analysis to protect individual website privacy",
+          "Encryption of all performance and usage data",
+          "Secure access controls for infrastructure monitoring"
+        ],
+        "userConsentMechanism": "Service-level consent through hosting service agreements"
+      },
+      "humanOversight": {
+        "mechanism": "24/7 infrastructure monitoring team, automated alerting systems, and manual intervention capabilities for critical issues",
+        "interventionPoints": [
+          "Manual intervention for critical performance issues",
+          "Human oversight of security threat responses",
+          "Regular review of AI optimization decisions"
+        ]
+      },
+      "complianceDetails": [
+        {
+          "regulation": "EU AI Act",
+          "status": "In Progress",
+          "notes": "Implementing transparency requirements for AI-powered infrastructure management"
+        }
+      ]
+    },
+    {
+      "systemId": "marketplace-ai-v1",
+      "systemName": "Domain Marketplace AI System",
+      "description": "AI-powered system for domain marketplace operations, including pricing optimization, demand prediction, and automated domain valuation for the NameSilo marketplace.",
+      "intendedPurpose": "Optimize domain pricing, predict market demand, automate domain valuation, and enhance marketplace user experience",
+      "deploymentStatus": "production",
+      "systemUrl": "https://www.namesilo.com/Marketplace",
+      "aiModelsUsed": [
+        {
+          "modelName": "Domain Valuation Engine",
+          "modelVersion": "1.2.1",
+          "developer": "NameSilo Marketplace Team",
+          "intendedPurpose": "Automated domain valuation and pricing optimization",
+          "architectureType": "Machine Learning with Market Analysis",
+          "trainingDataDescription": "Historical domain sales data, market trends, domain characteristics, and pricing patterns from 2018-2024",
+          "performanceMetrics": [
+            {
+              "metricName": "Valuation Accuracy",
+              "value": 0.78,
+              "context": "Accuracy of AI-generated domain valuations compared to actual sale prices"
+            },
+            {
+              "metricName": "Market Trend Prediction",
+              "value": 0.82,
+              "context": "Accuracy of demand and pricing trend predictions"
+            }
+          ],
+          "limitations": [
+            "May not accurately value unique or highly specialized domains",
+            "Limited effectiveness for emerging TLDs with limited sales history",
+            "Market volatility can affect prediction accuracy"
+          ],
+          "ethicalConsiderations": [
+            "Ensuring fair and transparent pricing for all marketplace participants",
+            "Preventing market manipulation through AI-driven pricing"
+          ],
+          "biasAssessment": "Regular audits of pricing algorithms to ensure fairness, with human oversight of high-value domain transactions."
+        }
+      ],
+      "dataGovernance": {
+        "dataCollectedCategories": [
+          "Domain sales history and pricing data",
+          "Market demand indicators",
+          "User bidding and purchase behavior",
+          "Domain characteristics and metrics"
+        ],
+        "dataCollectionMethods": [
+          "Automated tracking of marketplace transactions",
+          "Analysis of user behavior and bidding patterns",
+          "Market trend monitoring and analysis"
+        ],
+        "dataUsagePurpose": "Domain valuation, pricing optimization, market analysis, and user experience improvement",
+        "privacyMeasures": [
+          "Aggregated analysis to protect individual seller/buyer privacy",
+          "Secure storage of transaction data",
+          "Anonymized user behavior analysis"
+        ],
+        "userConsentMechanism": "Service-level consent through marketplace participation agreements"
+      },
+      "humanOversight": {
+        "mechanism": "Marketplace team oversight of AI valuations, manual review of high-value transactions, and regular system performance evaluation",
+        "interventionPoints": [
+          "Manual review of high-value domain valuations",
+          "Override capabilities for pricing anomalies",
+          "Regular assessment of market fairness and transparency"
+        ]
+      },
+      "complianceDetails": [
+        {
+          "regulation": "EU AI Act",
+          "status": "In Progress",
+          "notes": "Implementing transparency requirements for AI-powered marketplace systems"
+        }
+      ]
+    }
+  ],
+  "globalCompliance": {
+    "regulatoryFrameworksAdheredTo": [
+      "EU AI Act",
+      "US AI Executive Orders",
+      "NIST AI Risk Management Framework",
+      "OECD AI Principles"
+    ],
+    "complianceStatus": "In Progress",
+    "auditFrequency": "Quarterly",
+    "ethicalPrinciples": [
+      "Fairness",
+      "Accountability",
+      "Transparency",
+      "Privacy",
+      "Safety",
+      "Human Oversight",
+      "Inclusivity"
+    ],
+    "governanceStructure": "Internal AI Ethics Committee with cross-functional representation from legal, technical, and business teams"
+  },
+  "dataGovernanceOverview": {
+    "privacyByDesign": true,
+    "dataMinimization": true,
+    "userRights": [
+      "Data access and correction",
+      "Data deletion",
+      "Opt-out mechanisms",
+      "Transparency about data usage"
+    ],
+    "securityMeasures": [
+      "End-to-end encryption",
+      "Access controls and authentication",
+      "Regular security audits",
+      "Incident response procedures"
+    ]
+  },
+  "transparencyCommitments": {
+    "regularUpdates": "Monthly",
+    "publicAccess": true,
+    "apiEndpoint": "https://api.namesilo.com/ai-overview",
+    "humanReadableVersion": "https://www.namesilo.com/ai-transparency",
+    "feedbackMechanism": "ai-transparency@namesilo.com"
+  }
+} 

@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"
+      xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <url>
+       <loc>https://www.namesilo.com/email/titan</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.8000</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/jL-UCJXVWF8/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Intro to Titan - NameSilo</video:title>
+         <video:description></video:description>
+         <video:publication_date>2025-06-04T09:15:05Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/jL-UCJXVWF8</video:player_loc>
+         <video:duration>53</video:duration>
+       </video:video>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/VHGiSt5rfGQ/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Titan Ultra Namesilo</video:title>
+         <video:description></video:description>
+         <video:publication_date>2025-01-23T12:18:53Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/VHGiSt5rfGQ</video:player_loc>
+         <video:duration>78</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/G-Suite</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/2QW2hzXAW1E/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link NameSilo domain to Google Apps</video:title>
+         <video:description>Instructions for linking a NameSilo domain to Google Apps as found at https://www.namesilo.com/CustomDomain/Google-Apps.</video:description>
+         <video:publication_date>2013-10-29T20:44:43Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/2QW2hzXAW1E</video:player_loc>
+         <video:duration>112</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/support/v2/articles/domain-manager/domain-forwarding</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/r1-57RInVQU/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Forwarding domains</video:title>
+         <video:description>Tutorial demonstrating how to forward any domains within your NameSilo account.</video:description>
+         <video:publication_date>2013-10-21T22:08:09Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/r1-57RInVQU</video:player_loc>
+         <video:duration>139</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/support/v2/articles/account-options/domain-investor-tool</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/rs8l5bqii5E/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>NameSilo MarketSites Tutorial</video:title>
+         <video:description>NameSilo MarketSites Tutorial</video:description>
+         <video:publication_date>2016-05-26T17:11:55Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/rs8l5bqii5E</video:player_loc>
+         <video:duration>552</video:duration>
+       </video:video>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/pYuAyQ6jV_M/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>NameSilo Financial Tracking and Marketing Tools Tutorial</video:title>
+         <video:description>NameSilo Financial Tracking and Marketing Tools Tutorial</video:description>
+         <video:publication_date>2016-05-26T17:10:40Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/pYuAyQ6jV_M</video:player_loc>
+         <video:duration>525</video:duration>
+       </video:video>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/Zvt_pLHYHMs/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>NameSIlo DomainLink Tutorial</video:title>
+         <video:description>NameSIlo DomainLink Tutorial</video:description>
+         <video:publication_date>2016-05-26T17:10:20Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/Zvt_pLHYHMs</video:player_loc>
+         <video:duration>180</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/support/v2/articles/account-options/sub-account-manager</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/5XJgpoy2cHA/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Creating Sub-Account Users</video:title>
+         <video:description>Creating and managing sub-account user profiles for your NameSilo account.</video:description>
+         <video:publication_date>2013-10-21T22:27:55Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/5XJgpoy2cHA</video:player_loc>
+         <video:duration>256</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/support/v2/articles/domain-manager/manage-name-servers</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/PaWIl27t0dc/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Creating/Managing custom name servers</video:title>
+         <video:description>A tutorial covering how to create and manage customer name servers with your NameSilo account.</video:description>
+         <video:publication_date>2013-10-21T21:00:59Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/PaWIl27t0dc</video:player_loc>
+         <video:duration>187</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Behance-ProSite</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/vxImG54FOYs/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link NameSilo domain to Behance ProSite</video:title>
+         <video:description>Instructions for linking a NameSilo domain to Behance ProSite as found at https://www.namesilo.com/CustomDomain/Behance-ProSite.</video:description>
+         <video:publication_date>2013-10-29T20:51:14Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/vxImG54FOYs</video:player_loc>
+         <video:duration>104</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/bit.ly</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/E0KVEsqE7YI/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link NameSilo domain to bitly</video:title>
+         <video:description>Instructions for linking a NameSilo domain to bit.ly as found at https://www.namesilo.com/CustomDomain/bit.ly.</video:description>
+         <video:publication_date>2013-10-29T20:28:32Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/E0KVEsqE7YI</video:player_loc>
+         <video:duration>108</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Cargo</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/F4f2ttIZQZQ/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Cargo</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Cargo per the instructions here http://www.namesilo.com/CustomDomain/Cargo.</video:description>
+         <video:publication_date>2013-10-30T17:00:20Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/F4f2ttIZQZQ</video:player_loc>
+         <video:duration>110</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Flavors.me</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/cSPoUEQ0Szw/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Flavors.me</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Flavors.me per the instructions here http://www.namesilo.com/CustomDomain/Flavors.me.</video:description>
+         <video:publication_date>2013-10-30T22:09:06Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/cSPoUEQ0Szw</video:player_loc>
+         <video:duration>106</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Github</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/Pqk0U4Gio8g/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Github</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Github per the instructions here http://www.namesilo.com/CustomDomain/Github.</video:description>
+         <video:publication_date>2013-10-30T17:13:58Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/Pqk0U4Gio8g</video:player_loc>
+         <video:duration>109</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Site44</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/aLp6hFzDYSw/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Site44</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Site44 per the instructions here http://www.namesilo.com/CustomDomain/Site44.</video:description>
+         <video:publication_date>2013-10-30T17:19:43Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/aLp6hFzDYSw</video:player_loc>
+         <video:duration>107</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/SmugMug</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/8PI9KAjn91U/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to SmugMug</video:title>
+         <video:description>Instructions for linking your NameSilo domain to SmugMug per the instructions here http://www.namesilo.com/CustomDomain/SmugMug.</video:description>
+         <video:publication_date>2013-10-30T17:25:11Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/8PI9KAjn91U</video:player_loc>
+         <video:duration>106</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Squarespace</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/RVH5nQXSqCs/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Squarespace</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Squarespace per the instructions here http://www.namesilo.com/CustomDomain/Squarespace.</video:description>
+         <video:publication_date>2013-10-30T17:30:15Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/RVH5nQXSqCs</video:player_loc>
+         <video:duration>103</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Tumblr</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/iciK0Bk5nnQ/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Tumblr</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Tumblr per the instructions here http://www.namesilo.com/CustomDomain/Tumblr.</video:description>
+         <video:publication_date>2013-10-30T17:34:47Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/iciK0Bk5nnQ</video:player_loc>
+         <video:duration>103</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Unbounce</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/zuUDg7RPv4o/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Unbounce</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Unbounce per the instructions here http://www.namesilo.com/CustomDomain/Unbounce.</video:description>
+         <video:publication_date>2013-10-30T17:40:45Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/zuUDg7RPv4o</video:player_loc>
+         <video:duration>102</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Virb</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/2dd35ikcyE0/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Virb</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Virb per the instructions here http://www.namesilo.com/CustomDomain/Virb.</video:description>
+         <video:publication_date>2013-10-30T17:45:35Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/2dd35ikcyE0</video:player_loc>
+         <video:duration>101</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Weebly</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/3he-LTH5vmE/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Weebly</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Weebly per the instructions here http://www.namesilo.com/CustomDomain/Weebly.</video:description>
+         <video:publication_date>2013-10-30T17:50:33Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/3he-LTH5vmE</video:player_loc>
+         <video:duration>100</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Yola</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/-XAZAyptkTU/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Yola</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Yola per the instructions here http://www.namesilo.com/CustomDomain/Yola.</video:description>
+         <video:publication_date>2013-10-30T17:54:31Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/-XAZAyptkTU</video:player_loc>
+         <video:duration>101</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Zenfolio</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/gkWxhnUyKe0/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your NameSilo domain to Zenfolio</video:title>
+         <video:description>Instructions for linking your NameSilo domain to Zenfolio per the instructions here http://www.namesilo.com/CustomDomain/Zenfolio.</video:description>
+         <video:publication_date>2013-10-30T18:00:34Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/gkWxhnUyKe0</video:player_loc>
+         <video:duration>101</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/CustomDomain/Zoho-Mail</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.5120</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/f2pwh67yOGc/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Link your domain to Zoho Email</video:title>
+         <video:description>Link your domain to Zoho Email</video:description>
+         <video:publication_date>2016-03-02T23:17:08Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/f2pwh67yOGc</video:player_loc>
+         <video:duration>102</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/blog/en/domain-names/how-to-set-up-spf-dkim--dmarc-records-on-namesilo-for-google-workspace</loc>
+       <lastmod>2025-05-20T21:37:28+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.9500</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/Toz75gMmwTg/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Generate a DKIM key for your domain</video:title>
+         <video:description>Get your DKIM key in your Google Admin console. For more information, go to https://support.google.com/a?p=get-dkim-key
+
+[Email authentication video 8 of 11]
+
+--------------------------------------------------------------------------
+For 24/7 support and helpful tips, follow @AskWorkspace on Twitter → http://goo.gle/askworkspace
+
+What is Google Workspace? → http://goo.gle/3vSjgUr
+Set up Google Workspace →https://goo.gle/3InFfYb
+
+Subscribe to Google Workspace →https://goo.gle/GoogleWorkspace 
+Follow Google Workspace on Twitter → https://goo.gle/3dkgQGD
+Follow Google Workspace on Facebook→ https://goo.gle/3xHtxTR 
+Follow Google Workspace on LinkedIn → https://goo.gle/2IJgEl2
+Follow Google Workspace on Instagram → https://goo.gle/3zgCIem
+
+Product: Google Workspace.
+#GoogleWorkspaceTutorial 
+#GoogleWorkspace</video:description>
+         <video:publication_date>2021-07-21T15:49:13Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/Toz75gMmwTg</video:player_loc>
+         <video:duration>84</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/tld/ca</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.4096</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/weS39OIXkuE/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>Listen to the Goose | .CA by CIRA</video:title>
+         <video:description>Putting your business online? 85% of Canadians prefer a .CA domain when supporting local businesses. Learn more at https://www.cira.ca/.
+
+Choose success. Choose .CA 
+
+ ____  
+
+ABOUT CIRA: The Canadian Internet Registration Authority (CIRA) is a member-based not-for-profit organization, best known for managing the .CA internet domain on behalf of all Canadians. We are building programs, products and services that leverage all the internet has to offer to help build a trusted internet for Canadians. 
+
+FOLLOW CIRA ON SOCIAL:  
+
+Stay up to date with the latest .CA news and events by connecting with us.  
+
+FB: https://www.facebook.com/cira.ca  
+
+IG: https://www.instagram.com/ciradotca/  
+
+TW: https://twitter.com/ciranews  
+
+LI: https://www.linkedin.com/company/cana...  
+
+TT: https://www.tiktok.com/@cira.ca 
+
+ 
+
+#ChooseCA</video:description>
+         <video:publication_date>2022-09-13T18:11:26Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/weS39OIXkuE</video:player_loc>
+         <video:duration>31</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/tld/biz</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.0550</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/RA1ZMXlh5FE/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>The future of business is here.</video:title>
+         <video:description>The barriers to creating a digital presence are lower than ever before and in this wide-open digital world, .biz stands out as the sensible and accessible choice. For any business looking to establish themselves and start growing online, the future of business is here and .biz is trending up.</video:description>
+         <video:publication_date>2021-04-12T19:06:42Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/RA1ZMXlh5FE</video:player_loc>
+         <video:duration>27</video:duration>
+       </video:video>
+  </url>
+  <url>
+       <loc>https://www.namesilo.com/tld/online/</loc>
+       <lastmod>2025-07-25T14:04:32+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.0225</priority>
+       <video:video>
+         <video:thumbnail_loc>https://i.ytimg.com/vi/keVUmYRmAmA/mqdefault.jpg</video:thumbnail_loc> 
+         <video:title>.Online Domains on NameSilo</video:title>
+         <video:description>Register your .Online domain now at www.namesilo.online</video:description>
+         <video:publication_date>2020-02-27T19:13:23Z</video:publication_date>
+         <video:player_loc allow_embed="yes" autoplay="ap=1">https://www.youtube.com/embed/keVUmYRmAmA</video:player_loc>
+         <video:duration>76</video:duration>
+       </video:video>
+  </url>
+</urlset>
