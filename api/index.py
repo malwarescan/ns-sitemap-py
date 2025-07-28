@@ -185,7 +185,16 @@ HTML_TEMPLATE = """
                     body: formData
                 });
                 
-                const result = await response.json();
+                let result;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    result = await response.json();
+                } else {
+                    const text = await response.text();
+                    showError('Server returned non-JSON response: ' + text.substring(0, 200));
+                    return;
+                }
                 
                 if (response.ok) {
                     showSuccess(result.message);
@@ -401,6 +410,24 @@ def health():
         "deployment": "vercel"
     })
 
+@app.route('/api/test')
+def test():
+    """Test endpoint for debugging."""
+    return jsonify({
+        "message": "API is working",
+        "test_data": [
+            {
+                "url": "https://example.com",
+                "priority": 0.85,
+                "cluster": "misc",
+                "clicks": 100,
+                "impressions": 1000,
+                "ctr": 0.1,
+                "position": 5.0
+            }
+        ]
+    })
+
 @app.route('/api/sitemaps')
 def list_sitemaps():
     """List all available sitemaps."""
@@ -421,6 +448,10 @@ def generate_sitemaps():
         gsc_file = request.files['gsc_data']
         pe_file = request.files['pe_data']
         
+        # Validate file types
+        if not gsc_file.filename.endswith('.csv') or not pe_file.filename.endswith('.csv'):
+            return jsonify({"error": "Both files must be CSV format"}), 400
+        
         # Save uploaded files temporarily
         with tempfile.NamedTemporaryFile(mode='w+b', suffix='.csv', delete=False) as gsc_temp:
             gsc_file.save(gsc_temp.name)
@@ -430,44 +461,54 @@ def generate_sitemaps():
             pe_file.save(pe_temp.name)
             pe_path = pe_temp.name
         
-        # Load data
-        gsc_data = load_csv_data(gsc_path, ['clicks', 'impressions', 'ctr', 'position'])
-        pe_data = load_csv_data(pe_path, ['importance', 'depth', 'internal_links', 'health'])
-        
-        # Merge and deduplicate
-        merged = defaultdict(dict)
-        for entry in gsc_data:
-            norm = normalize_url(entry['url'])
-            merged[norm].update(entry)
-        for entry in pe_data:
-            norm = normalize_url(entry['url'])
-            merged[norm].update(entry)
-        
-        result = []
-        for norm_url, data in merged.items():
-            data['url'] = norm_url
-            data['priority'] = calculate_priority(data)
-            data['cluster'] = assign_cluster(norm_url)
-            result.append(data)
-        
-        # Sort by priority (highest first)
-        result.sort(key=lambda x: x['priority'], reverse=True)
-        
-        # Clean up temporary files
-        os.unlink(gsc_path)
-        os.unlink(pe_path)
-        
-        return jsonify({
-            "message": "Sitemaps processed successfully",
-            "gsc_urls": len(gsc_data),
-            "pe_urls": len(pe_data),
-            "merged_urls": len(result),
-            "timestamp": datetime.now().isoformat(),
-            "sample_data": result[:10] if result else []
-        })
+        try:
+            # Load data
+            gsc_data = load_csv_data(gsc_path, ['clicks', 'impressions', 'ctr', 'position'])
+            pe_data = load_csv_data(pe_path, ['importance', 'depth', 'internal_links', 'health'])
+            
+            # Merge and deduplicate
+            merged = defaultdict(dict)
+            for entry in gsc_data:
+                norm = normalize_url(entry['url'])
+                merged[norm].update(entry)
+            for entry in pe_data:
+                norm = normalize_url(entry['url'])
+                merged[norm].update(entry)
+            
+            result = []
+            for norm_url, data in merged.items():
+                data['url'] = norm_url
+                data['priority'] = calculate_priority(data)
+                data['cluster'] = assign_cluster(norm_url)
+                result.append(data)
+            
+            # Sort by priority (highest first)
+            result.sort(key=lambda x: x['priority'], reverse=True)
+            
+            response_data = {
+                "message": "Sitemaps processed successfully",
+                "gsc_urls": len(gsc_data),
+                "pe_urls": len(pe_data),
+                "merged_urls": len(result),
+                "timestamp": datetime.now().isoformat(),
+                "sample_data": result[:10] if result else []
+            }
+            
+            return jsonify(response_data)
+            
+        finally:
+            # Clean up temporary files
+            try:
+                os.unlink(gsc_path)
+                os.unlink(pe_path)
+            except:
+                pass
         
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error in generate_sitemaps: {error_details}")
+        return jsonify({"error": f"Processing error: {str(e)}"}), 500
 
 @app.route('/api/download/<sitemap_name>')
 def download_sitemap(sitemap_name):
