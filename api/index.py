@@ -22,219 +22,140 @@ HTML_TEMPLATE = """
     <title>Sitemap Priority System</title>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        .container {
+            font-family: Arial, sans-serif;
+            margin: 20px;
             background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
         h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5em;
+            margin-bottom: 20px;
         }
         .upload-section {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 25px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .file-input {
-            margin: 15px 0;
+            margin: 10px 0;
         }
         .file-input label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
-        }
-        .file-input input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            border: 2px dashed #ddd;
-            border-radius: 6px;
-            background: white;
+            margin-bottom: 5px;
         }
         .btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 6px;
+            background: #ccc;
+            border: 1px solid #999;
+            padding: 10px 20px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: transform 0.2s;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
         }
         .btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
         }
         .results {
-            margin-top: 30px;
+            margin-top: 20px;
             display: none;
         }
         .results.show {
             display: block;
         }
         .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
         .stat-card {
-            background: white;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-        }
-        .stat-label {
-            color: #666;
-            margin-top: 5px;
+            display: inline-block;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
         }
         .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .data-table th {
-            background: #667eea;
-            color: white;
-            padding: 12px;
+        .data-table th, .data-table td {
+            border: 1px solid #ccc;
+            padding: 5px;
             text-align: left;
         }
-        .data-table td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+        .data-table th {
+            background: #f0f0f0;
         }
-        .data-table tr:hover {
-            background: #f8f9fa;
-        }
-        .cluster-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .cluster-blog { background: #e3f2fd; color: #1976d2; }
-        .cluster-support { background: #f3e5f5; color: #7b1fa2; }
-        .cluster-tlds { background: #e8f5e8; color: #388e3c; }
-        .cluster-tools { background: #fff3e0; color: #f57c00; }
-        .cluster-seo { background: #fce4ec; color: #c2185b; }
-        .cluster-misc { background: #f5f5f5; color: #616161; }
         .loading {
             text-align: center;
             padding: 20px;
-            color: #666;
         }
         .error {
-            background: #ffebee;
-            color: #c62828;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 4px solid #c62828;
+            color: red;
+            margin: 10px 0;
         }
         .success {
-            background: #e8f5e8;
-            color: #2e7d32;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 15px 0;
-            border-left: 4px solid #2e7d32;
+            color: green;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🗺️ Sitemap Priority System</h1>
-        
-        <div class="upload-section">
-            <h2>Upload Data Files</h2>
-            <form id="uploadForm">
-                <div class="file-input">
-                    <label for="gscFile">Google Search Console Data (CSV)</label>
-                    <input type="file" id="gscFile" name="gsc_data" accept=".csv" required>
-                </div>
-                <div class="file-input">
-                    <label for="peFile">Page Explorer Data (CSV)</label>
-                    <input type="file" id="peFile" name="pe_data" accept=".csv" required>
-                </div>
-                <button type="submit" class="btn" id="submitBtn">🚀 Process Data</button>
-            </form>
-        </div>
-
-        <div id="loading" class="loading" style="display: none;">
-            <h3>Processing your data...</h3>
-            <p>This may take a few moments.</p>
-        </div>
-
-        <div id="error" class="error" style="display: none;"></div>
-        <div id="success" class="success" style="display: none;"></div>
-
-        <div id="results" class="results">
-            <h2>📊 Processing Results</h2>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <div class="stat-number" id="gscCount">0</div>
-                    <div class="stat-label">GSC URLs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="peCount">0</div>
-                    <div class="stat-label">Page Explorer URLs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="mergedCount">0</div>
-                    <div class="stat-label">Merged URLs</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="avgPriority">0.00</div>
-                    <div class="stat-label">Avg Priority</div>
-                </div>
+    <h1>Sitemap Priority System</h1>
+    
+    <div class="upload-section">
+        <h2>Upload Data Files</h2>
+        <form id="uploadForm">
+            <div class="file-input">
+                <label for="gscFile">Google Search Console Data (CSV)</label>
+                <input type="file" id="gscFile" name="gsc_data" accept=".csv" required>
             </div>
+            <div class="file-input">
+                <label for="peFile">Page Explorer Data (CSV)</label>
+                <input type="file" id="peFile" name="pe_data" accept=".csv" required>
+            </div>
+            <button type="submit" class="btn" id="submitBtn">Process Data</button>
+        </form>
+    </div>
 
-            <h3>📋 Sample Data (Top 10 URLs)</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>URL</th>
-                        <th>Priority</th>
-                        <th>Cluster</th>
-                        <th>Clicks</th>
-                        <th>Impressions</th>
-                        <th>CTR</th>
-                        <th>Position</th>
-                    </tr>
-                </thead>
-                <tbody id="dataTable">
-                </tbody>
-            </table>
+    <div id="loading" class="loading" style="display: none;">
+        <h3>Processing your data...</h3>
+        <p>This may take a few moments.</p>
+    </div>
+
+    <div id="error" class="error" style="display: none;"></div>
+    <div id="success" class="success" style="display: none;"></div>
+
+    <div id="results" class="results">
+        <h2>Processing Results</h2>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div id="gscCount">0</div>
+                <div>GSC URLs</div>
+            </div>
+            <div class="stat-card">
+                <div id="peCount">0</div>
+                <div>Page Explorer URLs</div>
+            </div>
+            <div class="stat-card">
+                <div id="mergedCount">0</div>
+                <div>Merged URLs</div>
+            </div>
+            <div class="stat-card">
+                <div id="avgPriority">0.00</div>
+                <div>Avg Priority</div>
+            </div>
         </div>
+
+        <h3>Sample Data (Top 10 URLs)</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>URL</th>
+                    <th>Priority</th>
+                    <th>Cluster</th>
+                    <th>Clicks</th>
+                    <th>Impressions</th>
+                    <th>CTR</th>
+                    <th>Position</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+            </tbody>
+        </table>
     </div>
 
     <script>
@@ -325,8 +246,8 @@ HTML_TEMPLATE = """
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${item.url}</td>
-                        <td><strong>${item.priority.toFixed(3)}</strong></td>
-                        <td><span class="cluster-badge cluster-${item.cluster}">${item.cluster}</span></td>
+                        <td>${item.priority.toFixed(3)}</td>
+                        <td>${item.cluster}</td>
                         <td>${item.clicks || 0}</td>
                         <td>${item.impressions || 0}</td>
                         <td>${(item.ctr || 0).toFixed(3)}</td>
