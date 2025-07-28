@@ -7,6 +7,8 @@ from datetime import datetime
 from collections import defaultdict
 from urllib.parse import urlparse, parse_qs
 import cgi
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
 
 def normalize_url(url: str) -> str:
     """Normalize URL for deduplication."""
@@ -127,6 +129,62 @@ def assign_cluster(url: str) -> str:
     else:
         return 'misc'
 
+def create_sitemap_xml(urls: list, sitemap_name: str) -> str:
+    """Create XML sitemap from URL list."""
+    # Create root element
+    root = ET.Element('urlset')
+    root.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+    
+    # Add URLs
+    for url_data in urls:
+        url_elem = ET.SubElement(root, 'url')
+        
+        # URL location
+        loc_elem = ET.SubElement(url_elem, 'loc')
+        loc_elem.text = url_data['url']
+        
+        # Last modified (use current time)
+        lastmod_elem = ET.SubElement(url_elem, 'lastmod')
+        lastmod_elem.text = datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
+        
+        # Change frequency
+        changefreq_elem = ET.SubElement(url_elem, 'changefreq')
+        if url_data['cluster'] == 'blog':
+            changefreq_elem.text = 'weekly'
+        elif url_data['cluster'] == 'support':
+            changefreq_elem.text = 'monthly'
+        else:
+            changefreq_elem.text = 'daily'
+        
+        # Priority
+        priority_elem = ET.SubElement(url_elem, 'priority')
+        priority_elem.text = f"{url_data['priority']:.4f}"
+    
+    # Pretty print XML
+    rough_string = ET.tostring(root, 'unicode')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
+
+def create_sitemap_index(clusters: dict) -> str:
+    """Create sitemap index XML."""
+    root = ET.Element('sitemapindex')
+    root.set('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+    
+    for cluster_name, urls in clusters.items():
+        if urls:  # Only add clusters with URLs
+            sitemap_elem = ET.SubElement(root, 'sitemap')
+            
+            loc_elem = ET.SubElement(sitemap_elem, 'loc')
+            loc_elem.text = f"https://your-domain.com/{cluster_name}-sitemap.xml"
+            
+            lastmod_elem = ET.SubElement(sitemap_elem, 'lastmod')
+            lastmod_elem.text = datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
+    
+    # Pretty print XML
+    rough_string = ET.tostring(root, 'unicode')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
+
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         self.send_response(200)
@@ -186,13 +244,44 @@ class handler(BaseHTTPRequestHandler):
                 # Sort by priority (highest first)
                 result.sort(key=lambda x: x['priority'], reverse=True)
                 
+                # Group by cluster
+                clusters = defaultdict(list)
+                for item in result:
+                    clusters[item['cluster']].append(item)
+                
+                # Create sitemap XMLs
+                sitemaps = {}
+                for cluster_name, cluster_urls in clusters.items():
+                    if cluster_urls:
+                        sitemap_xml = create_sitemap_xml(cluster_urls, f"{cluster_name}-sitemap.xml")
+                        sitemaps[f"{cluster_name}-sitemap.xml"] = sitemap_xml
+                
+                # Create sitemap index
+                sitemap_index = create_sitemap_index(clusters)
+                sitemaps["sitemap-index.xml"] = sitemap_index
+                
+                # Calculate statistics
+                cluster_stats = {}
+                for cluster_name, cluster_urls in clusters.items():
+                    if cluster_urls:
+                        avg_priority = sum(u['priority'] for u in cluster_urls) / len(cluster_urls)
+                        cluster_stats[cluster_name] = {
+                            'count': len(cluster_urls),
+                            'avg_priority': round(avg_priority, 3),
+                            'top_priority': max(u['priority'] for u in cluster_urls)
+                        }
+                
                 response_data = {
-                    "message": "Sitemaps processed successfully",
+                    "message": "Sitemaps generated successfully",
                     "gsc_urls": len(gsc_data),
                     "pe_urls": len(pe_data),
                     "merged_urls": len(result),
                     "timestamp": datetime.now().isoformat(),
-                    "sample_data": result[:10] if result else []
+                    "cluster_stats": cluster_stats,
+                    "sitemaps_created": list(sitemaps.keys()),
+                    "sample_data": result[:10] if result else [],  # Keep sample for UI display
+                    "full_data": result,  # Include full data
+                    "sitemap_content": sitemaps  # Include XML content
                 }
                 
                 self.wfile.write(json.dumps(response_data).encode())

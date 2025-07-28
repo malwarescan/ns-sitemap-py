@@ -56,20 +56,35 @@ HTML_TEMPLATE = """
     </div>
     <div id="error" class="error" style="display: none;"></div>
     <div id="success" class="success" style="display: none;"></div>
-    <div id="results" class="results">
-        <h2>Processing Results</h2>
-        <div class="stats">
-            <div class="stat-card"><div id="gscCount">0</div><div>GSC URLs</div></div>
-            <div class="stat-card"><div id="peCount">0</div><div>Page Explorer URLs</div></div>
-            <div class="stat-card"><div id="mergedCount">0</div><div>Merged URLs</div></div>
-            <div class="stat-card"><div id="avgPriority">0.00</div><div>Avg Priority</div></div>
+            <div id="results" class="results">
+            <h2>Processing Results</h2>
+            <div class="stats">
+                <div class="stat-card"><div id="gscCount">0</div><div>GSC URLs</div></div>
+                <div class="stat-card"><div id="peCount">0</div><div>Page Explorer URLs</div></div>
+                <div class="stat-card"><div id="mergedCount">0</div><div>Merged URLs</div></div>
+                <div class="stat-card"><div id="avgPriority">0.00</div><div>Avg Priority</div></div>
+            </div>
+            
+            <div id="clusterStats" class="cluster-stats" style="margin: 20px 0; display: none;">
+                <h3>Cluster Statistics</h3>
+                <div id="clusterStatsContent"></div>
+            </div>
+            
+            <div id="sitemapDownloads" class="sitemap-downloads" style="margin: 20px 0; display: none;">
+                <h3>Generated Sitemaps</h3>
+                <div id="sitemapDownloadsContent"></div>
+            </div>
+            
+            <h3>Sample Data (Top 10 URLs)</h3>
+            <table class="data-table">
+                <thead><tr><th>URL</th><th>Priority</th><th>Cluster</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr></thead>
+                <tbody id="dataTable"></tbody>
+            </table>
+            
+            <div id="fullDataInfo" style="margin-top: 20px; display: none;">
+                <p><strong>Full Data:</strong> <span id="totalUrls">0</span> URLs processed. Download the sitemap files above to get the complete dataset.</p>
+            </div>
         </div>
-        <h3>Sample Data (Top 10 URLs)</h3>
-        <table class="data-table">
-            <thead><tr><th>URL</th><th>Priority</th><th>Cluster</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr></thead>
-            <tbody id="dataTable"></tbody>
-        </table>
-    </div>
     <script>
         document.getElementById('uploadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -155,6 +170,51 @@ HTML_TEMPLATE = """
                 : '0.000';
             document.getElementById('avgPriority').textContent = avgPriority;
             
+            // Display cluster statistics
+            if (data.cluster_stats) {
+                const clusterStatsDiv = document.getElementById('clusterStatsContent');
+                clusterStatsDiv.innerHTML = '';
+                
+                Object.entries(data.cluster_stats).forEach(([cluster, stats]) => {
+                    const clusterDiv = document.createElement('div');
+                    clusterDiv.style.cssText = 'display: inline-block; margin: 10px; padding: 10px; border: 1px solid #ccc; background: #f9f9f9;';
+                    clusterDiv.innerHTML = `
+                        <div><strong>${cluster.toUpperCase()}</strong></div>
+                        <div>URLs: ${stats.count}</div>
+                        <div>Avg Priority: ${stats.avg_priority}</div>
+                        <div>Top Priority: ${stats.top_priority.toFixed(3)}</div>
+                    `;
+                    clusterStatsDiv.appendChild(clusterDiv);
+                });
+                document.getElementById('clusterStats').style.display = 'block';
+            }
+            
+            // Display sitemap downloads
+            if (data.sitemap_content) {
+                const downloadsDiv = document.getElementById('sitemapDownloadsContent');
+                downloadsDiv.innerHTML = '';
+                
+                Object.entries(data.sitemap_content).forEach(([filename, xmlContent]) => {
+                    const downloadDiv = document.createElement('div');
+                    downloadDiv.style.cssText = 'margin: 10px 0; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;';
+                    
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.textContent = `Download ${filename}`;
+                    downloadBtn.style.cssText = 'background: #007cba; color: white; border: none; padding: 8px 16px; cursor: pointer; margin-right: 10px;';
+                    downloadBtn.onclick = () => downloadSitemap(filename, xmlContent);
+                    
+                    const sizeSpan = document.createElement('span');
+                    sizeSpan.textContent = `Size: ${(xmlContent.length / 1024).toFixed(1)} KB`;
+                    sizeSpan.style.cssText = 'color: #666; font-size: 0.9em;';
+                    
+                    downloadDiv.appendChild(downloadBtn);
+                    downloadDiv.appendChild(sizeSpan);
+                    downloadsDiv.appendChild(downloadDiv);
+                });
+                document.getElementById('sitemapDownloads').style.display = 'block';
+            }
+            
+            // Display sample data table
             const tableBody = document.getElementById('dataTable');
             tableBody.innerHTML = '';
             if (data.sample_data && data.sample_data.length > 0) {
@@ -172,7 +232,26 @@ HTML_TEMPLATE = """
                     tableBody.appendChild(row);
                 });
             }
+            
+            // Show full data info
+            if (data.full_data) {
+                document.getElementById('totalUrls').textContent = data.full_data.length;
+                document.getElementById('fullDataInfo').style.display = 'block';
+            }
+            
             document.getElementById('results').classList.add('show');
+        }
+        
+        function downloadSitemap(filename, xmlContent) {
+            const blob = new Blob([xmlContent], { type: 'application/xml' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
         }
     </script>
 </body>
