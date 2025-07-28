@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, render_template_string
 from flask_cors import CORS
 import os
 import sys
@@ -11,6 +11,338 @@ from urllib.parse import urlparse
 
 app = Flask(__name__)
 CORS(app)
+
+# HTML template for the UI
+HTML_TEMPLATE = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitemap Priority System</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .upload-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .file-input {
+            margin: 15px 0;
+        }
+        .file-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        .file-input input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #ddd;
+            border-radius: 6px;
+            background: white;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .results {
+            margin-top: 30px;
+            display: none;
+        }
+        .results.show {
+            display: block;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .data-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        .cluster-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .cluster-blog { background: #e3f2fd; color: #1976d2; }
+        .cluster-support { background: #f3e5f5; color: #7b1fa2; }
+        .cluster-tlds { background: #e8f5e8; color: #388e3c; }
+        .cluster-tools { background: #fff3e0; color: #f57c00; }
+        .cluster-seo { background: #fce4ec; color: #c2185b; }
+        .cluster-misc { background: #f5f5f5; color: #616161; }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #c62828;
+        }
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🗺️ Sitemap Priority System</h1>
+        
+        <div class="upload-section">
+            <h2>Upload Data Files</h2>
+            <form id="uploadForm">
+                <div class="file-input">
+                    <label for="gscFile">Google Search Console Data (CSV)</label>
+                    <input type="file" id="gscFile" name="gsc_data" accept=".csv" required>
+                </div>
+                <div class="file-input">
+                    <label for="peFile">Page Explorer Data (CSV)</label>
+                    <input type="file" id="peFile" name="pe_data" accept=".csv" required>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">🚀 Process Data</button>
+            </form>
+        </div>
+
+        <div id="loading" class="loading" style="display: none;">
+            <h3>Processing your data...</h3>
+            <p>This may take a few moments.</p>
+        </div>
+
+        <div id="error" class="error" style="display: none;"></div>
+        <div id="success" class="success" style="display: none;"></div>
+
+        <div id="results" class="results">
+            <h2>📊 Processing Results</h2>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="gscCount">0</div>
+                    <div class="stat-label">GSC URLs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="peCount">0</div>
+                    <div class="stat-label">Page Explorer URLs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="mergedCount">0</div>
+                    <div class="stat-label">Merged URLs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgPriority">0.00</div>
+                    <div class="stat-label">Avg Priority</div>
+                </div>
+            </div>
+
+            <h3>📋 Sample Data (Top 10 URLs)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>URL</th>
+                        <th>Priority</th>
+                        <th>Cluster</th>
+                        <th>Clicks</th>
+                        <th>Impressions</th>
+                        <th>CTR</th>
+                        <th>Position</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const gscFile = document.getElementById('gscFile').files[0];
+            const peFile = document.getElementById('peFile').files[0];
+            
+            if (!gscFile || !peFile) {
+                showError('Please select both CSV files');
+                return;
+            }
+            
+            formData.append('gsc_data', gscFile);
+            formData.append('pe_data', peFile);
+            
+            // Show loading
+            showLoading(true);
+            hideError();
+            hideSuccess();
+            
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showSuccess(result.message);
+                    displayResults(result);
+                } else {
+                    showError(result.error || 'An error occurred');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        });
+        
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+            document.getElementById('submitBtn').disabled = show;
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        function hideError() {
+            document.getElementById('error').style.display = 'none';
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('success');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+        }
+        
+        function hideSuccess() {
+            document.getElementById('success').style.display = 'none';
+        }
+        
+        function displayResults(data) {
+            // Update stats
+            document.getElementById('gscCount').textContent = data.gsc_urls;
+            document.getElementById('peCount').textContent = data.pe_urls;
+            document.getElementById('mergedCount').textContent = data.merged_urls;
+            
+            // Calculate average priority
+            if (data.sample_data && data.sample_data.length > 0) {
+                const avgPriority = data.sample_data.reduce((sum, item) => sum + item.priority, 0) / data.sample_data.length;
+                document.getElementById('avgPriority').textContent = avgPriority.toFixed(2);
+            }
+            
+            // Display sample data
+            const tableBody = document.getElementById('dataTable');
+            tableBody.innerHTML = '';
+            
+            if (data.sample_data && data.sample_data.length > 0) {
+                data.sample_data.slice(0, 10).forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.url}</td>
+                        <td><strong>${item.priority.toFixed(3)}</strong></td>
+                        <td><span class="cluster-badge cluster-${item.cluster}">${item.cluster}</span></td>
+                        <td>${item.clicks || 0}</td>
+                        <td>${item.impressions || 0}</td>
+                        <td>${(item.ctr || 0).toFixed(3)}</td>
+                        <td>${item.position || 0}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            // Show results
+            document.getElementById('results').classList.add('show');
+        }
+    </script>
+</body>
+</html>
+"""
 
 # Simplified sitemap functions for Vercel deployment
 def normalize_url(url: str) -> str:
@@ -135,18 +467,8 @@ def assign_cluster(url: str) -> str:
 
 @app.route('/')
 def home():
-    """Home page with API documentation."""
-    return jsonify({
-        "message": "Sitemap Priority System API",
-        "version": "1.0.0",
-        "status": "deployed",
-        "endpoints": {
-            "/api/health": "Health check",
-            "/api/sitemaps": "List available sitemaps",
-            "/api/generate": "Generate new sitemaps (POST with CSV data)",
-            "/api/download/<sitemap>": "Download specific sitemap"
-        }
-    })
+    """Home page with UI."""
+    return render_template_string(HTML_TEMPLATE)
 
 @app.route('/api/health')
 def health():
@@ -207,6 +529,9 @@ def generate_sitemaps():
             data['cluster'] = assign_cluster(norm_url)
             result.append(data)
         
+        # Sort by priority (highest first)
+        result.sort(key=lambda x: x['priority'], reverse=True)
+        
         # Clean up temporary files
         os.unlink(gsc_path)
         os.unlink(pe_path)
@@ -217,7 +542,7 @@ def generate_sitemaps():
             "pe_urls": len(pe_data),
             "merged_urls": len(result),
             "timestamp": datetime.now().isoformat(),
-            "sample_data": result[:5] if result else []
+            "sample_data": result[:10] if result else []
         })
         
     except Exception as e:
