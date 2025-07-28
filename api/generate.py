@@ -9,6 +9,7 @@ from urllib.parse import urlparse, parse_qs
 import cgi
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
+import re
 
 def normalize_url(url: str) -> str:
     """Normalize URL for deduplication."""
@@ -185,6 +186,197 @@ def create_sitemap_index(clusters: dict) -> str:
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
+def analyze_competitor_sitemap(xml_content: str) -> dict:
+    """Analyze competitor sitemap for insights and recommendations."""
+    try:
+        # Parse XML
+        root = ET.fromstring(xml_content)
+        
+        # Extract URLs and metadata
+        urls = []
+        for url_elem in root.findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}url'):
+            url_data = {}
+            
+            loc_elem = url_elem.find('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+            if loc_elem is not None:
+                url_data['url'] = loc_elem.text
+            
+            priority_elem = url_elem.find('{http://www.sitemaps.org/schemas/sitemap/0.9}priority')
+            if priority_elem is not None:
+                url_data['priority'] = float(priority_elem.text)
+            else:
+                url_data['priority'] = 0.5
+            
+            changefreq_elem = url_elem.find('{http://www.sitemaps.org/schemas/sitemap/0.9}changefreq')
+            if changefreq_elem is not None:
+                url_data['changefreq'] = changefreq_elem.text
+            else:
+                url_data['changefreq'] = 'weekly'
+            
+            urls.append(url_data)
+        
+        if not urls:
+            return {"error": "No URLs found in competitor sitemap"}
+        
+        # Analyze URL patterns
+        categories = analyze_url_categories(urls)
+        
+        # Calculate statistics
+        priorities = [u['priority'] for u in urls if 'priority' in u]
+        avg_priority = sum(priorities) / len(priorities) if priorities else 0.5
+        
+        # Determine update frequency strategy
+        changefreqs = [u['changefreq'] for u in urls if 'changefreq' in u]
+        update_frequency = determine_update_frequency(changefreqs)
+        
+        # Generate insights
+        insights = generate_insights(urls, categories, avg_priority)
+        
+        # Generate recommendations
+        recommendations = generate_recommendations(urls, categories, avg_priority)
+        
+        # Create URL structure analysis
+        url_structure = create_url_structure_analysis(categories)
+        
+        return {
+            "total_urls": len(urls),
+            "avg_priority": avg_priority,
+            "categories": list(categories.keys()),
+            "update_frequency": update_frequency,
+            "insights": insights,
+            "recommendations": recommendations,
+            "url_structure": url_structure
+        }
+        
+    except Exception as e:
+        return {"error": f"Error analyzing competitor sitemap: {str(e)}"}
+
+def analyze_url_categories(urls: list) -> dict:
+    """Categorize URLs by content type."""
+    categories = {
+        'homepage': [],
+        'product_pages': [],
+        'category_pages': [],
+        'blog_content': [],
+        'support_help': [],
+        'landing_pages': [],
+        'tools_utilities': [],
+        'other': []
+    }
+    
+    for url_data in urls:
+        url = url_data['url'].lower()
+        
+        if url.endswith('/') or url.endswith('/index.html') or url.endswith('/index.php'):
+            categories['homepage'].append(url_data)
+        elif any(pattern in url for pattern in ['/product/', '/item/', '/buy/', '/purchase/']):
+            categories['product_pages'].append(url_data)
+        elif any(pattern in url for pattern in ['/category/', '/catalog/', '/collection/']):
+            categories['category_pages'].append(url_data)
+        elif any(pattern in url for pattern in ['/blog/', '/news/', '/article/', '/post/']):
+            categories['blog_content'].append(url_data)
+        elif any(pattern in url for pattern in ['/support/', '/help/', '/faq/', '/guide/']):
+            categories['support_help'].append(url_data)
+        elif any(pattern in url for pattern in ['/landing/', '/campaign/', '/promo/']):
+            categories['landing_pages'].append(url_data)
+        elif any(pattern in url for pattern in ['/tool/', '/calculator/', '/checker/', '/generator/']):
+            categories['tools_utilities'].append(url_data)
+        else:
+            categories['other'].append(url_data)
+    
+    # Remove empty categories
+    return {k: v for k, v in categories.items() if v}
+
+def determine_update_frequency(changefreqs: list) -> str:
+    """Determine the primary update frequency strategy."""
+    if not changefreqs:
+        return "Not specified"
+    
+    freq_count = {}
+    for freq in changefreqs:
+        freq_count[freq] = freq_count.get(freq, 0) + 1
+    
+    # Find most common frequency
+    most_common = max(freq_count.items(), key=lambda x: x[1])
+    return f"Mostly {most_common[0]} ({most_common[1]} URLs)"
+
+def generate_insights(urls: list, categories: dict, avg_priority: float) -> list:
+    """Generate strategic insights from competitor analysis."""
+    insights = []
+    
+    # Content strategy insights
+    if 'blog_content' in categories and len(categories['blog_content']) > 10:
+        insights.append("Strong content marketing focus with extensive blog section")
+    
+    if 'product_pages' in categories and len(categories['product_pages']) > 20:
+        insights.append("Comprehensive product catalog with detailed product pages")
+    
+    if 'tools_utilities' in categories:
+        insights.append("Uses tools and utilities to attract and engage users")
+    
+    # Priority strategy insights
+    if avg_priority > 0.7:
+        insights.append("High priority strategy - focuses on quality over quantity")
+    elif avg_priority < 0.4:
+        insights.append("Quantity-focused strategy - covers extensive content")
+    else:
+        insights.append("Balanced priority strategy")
+    
+    # URL structure insights
+    total_urls = len(urls)
+    if total_urls > 1000:
+        insights.append("Large-scale content strategy with extensive URL coverage")
+    elif total_urls < 100:
+        insights.append("Focused, niche content strategy")
+    
+    return insights
+
+def generate_recommendations(urls: list, categories: dict, avg_priority: float) -> list:
+    """Generate optimization recommendations based on competitor analysis."""
+    recommendations = []
+    
+    # Content recommendations
+    if 'blog_content' not in categories:
+        recommendations.append("Consider adding a blog section for content marketing")
+    
+    if 'tools_utilities' not in categories:
+        recommendations.append("Explore adding interactive tools to increase user engagement")
+    
+    if 'support_help' not in categories:
+        recommendations.append("Add support/help section to improve user experience")
+    
+    # Priority recommendations
+    if avg_priority > 0.7:
+        recommendations.append("Consider expanding content coverage while maintaining quality")
+    elif avg_priority < 0.4:
+        recommendations.append("Focus on improving content quality and priority scores")
+    
+    # Structure recommendations
+    total_urls = len(urls)
+    if total_urls < 50:
+        recommendations.append("Expand content coverage to compete more effectively")
+    elif total_urls > 2000:
+        recommendations.append("Focus on content quality and user experience over quantity")
+    
+    return recommendations
+
+def create_url_structure_analysis(categories: dict) -> list:
+    """Create URL structure analysis for display."""
+    structure = []
+    
+    for category_name, urls in categories.items():
+        if urls:
+            # Get sample URLs (first 5)
+            sample_urls = [url['url'] for url in urls[:5]]
+            
+            structure.append({
+                'name': category_name.replace('_', ' ').title(),
+                'count': len(urls),
+                'sample_urls': sample_urls
+            })
+    
+    return structure
+
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         self.send_response(200)
@@ -210,6 +402,7 @@ class handler(BaseHTTPRequestHandler):
             
             gsc_file = form['gsc_data']
             pe_file = form['pe_data']
+            competitor_file = form.get('competitor_sitemap') if 'competitor_sitemap' in form else None
             
             # Save uploaded files temporarily
             with tempfile.NamedTemporaryFile(mode='w+b', suffix='.csv', delete=False) as gsc_temp:
@@ -219,6 +412,13 @@ class handler(BaseHTTPRequestHandler):
             with tempfile.NamedTemporaryFile(mode='w+b', suffix='.csv', delete=False) as pe_temp:
                 pe_temp.write(pe_file.file.read())
                 pe_path = pe_temp.name
+            
+            # Save competitor file if provided
+            competitor_path = None
+            if competitor_file:
+                with tempfile.NamedTemporaryFile(mode='w+b', suffix='.xml', delete=False) as comp_temp:
+                    comp_temp.write(competitor_file.file.read())
+                    competitor_path = comp_temp.name
             
             try:
                 # Load data
@@ -271,6 +471,16 @@ class handler(BaseHTTPRequestHandler):
                             'top_priority': max(u['priority'] for u in cluster_urls)
                         }
                 
+                # Analyze competitor sitemap if provided
+                competitor_analysis = None
+                if competitor_path:
+                    try:
+                        with open(competitor_path, 'r', encoding='utf-8') as f:
+                            competitor_xml = f.read()
+                        competitor_analysis = analyze_competitor_sitemap(competitor_xml)
+                    except Exception as e:
+                        competitor_analysis = {"error": f"Error analyzing competitor sitemap: {str(e)}"}
+                
                 response_data = {
                     "message": "Sitemaps generated successfully",
                     "gsc_urls": len(gsc_data),
@@ -281,7 +491,8 @@ class handler(BaseHTTPRequestHandler):
                     "sitemaps_created": list(sitemaps.keys()),
                     "sample_data": result[:10] if result else [],  # Keep sample for UI display
                     "full_data": result,  # Include full data
-                    "sitemap_content": sitemaps  # Include XML content
+                    "sitemap_content": sitemaps,  # Include XML content
+                    "competitor_analysis": competitor_analysis  # Include competitor analysis
                 }
                 
                 self.wfile.write(json.dumps(response_data).encode())
@@ -291,6 +502,8 @@ class handler(BaseHTTPRequestHandler):
                 try:
                     os.unlink(gsc_path)
                     os.unlink(pe_path)
+                    if competitor_path:
+                        os.unlink(competitor_path)
                 except:
                     pass
                     

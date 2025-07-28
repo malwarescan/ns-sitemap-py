@@ -83,20 +83,25 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <h1>Sitemap Priority System</h1>
-    <div class="upload-section">
-        <h2>Upload Data Files</h2>
-        <form id="uploadForm">
-            <div class="file-input">
-                <label for="gscFile">Google Search Console Data (CSV)</label>
-                <input type="file" id="gscFile" name="gsc_data" accept=".csv" required>
-            </div>
-            <div class="file-input">
-                <label for="peFile">Page Explorer Data (CSV)</label>
-                <input type="file" id="peFile" name="pe_data" accept=".csv" required>
-            </div>
-            <button type="submit" class="btn" id="submitBtn">Process Data</button>
-        </form>
-    </div>
+                    <div class="upload-section">
+                    <h2>Upload Data Files</h2>
+                    <form id="uploadForm">
+                        <div class="file-input">
+                            <label for="gscFile">Google Search Console Data (CSV)</label>
+                            <input type="file" id="gscFile" name="gsc_data" accept=".csv" required>
+                        </div>
+                        <div class="file-input">
+                            <label for="peFile">Page Explorer Data (CSV)</label>
+                            <input type="file" id="peFile" name="pe_data" accept=".csv" required>
+                        </div>
+                        <div class="file-input">
+                            <label for="competitorFile">Competitor Sitemap (Optional - XML)</label>
+                            <input type="file" id="competitorFile" name="competitor_sitemap" accept=".xml">
+                            <small style="color: #666;">Upload a competitor's sitemap to analyze their structure and get optimization insights</small>
+                        </div>
+                        <button type="submit" class="btn" id="submitBtn">Process Data</button>
+                    </form>
+                </div>
     <div id="loading" class="loading" style="display: none;">
         <h3>Processing your data...</h3>
         <p>This may take a few moments.</p>
@@ -122,11 +127,12 @@ HTML_TEMPLATE = """
                 <div id="sitemapDownloadsContent"></div>
             </div>
             
-            <div class="tabs">
-                <div class="tab-buttons">
-                    <button class="tab-button active" onclick="showTab('sample')">Sample Data</button>
-                    <button class="tab-button" onclick="showTab('structure')">URL Structure</button>
-                </div>
+                            <div class="tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" onclick="showTab('sample')">Sample Data</button>
+                        <button class="tab-button" onclick="showTab('structure')">URL Structure</button>
+                        <button class="tab-button" onclick="showTab('competitor')">Competitor Analysis</button>
+                    </div>
                 
                 <div id="sampleTab" class="tab-content active">
                     <h3>Sample Data (Top 10 URLs)</h3>
@@ -139,6 +145,13 @@ HTML_TEMPLATE = """
                 <div id="structureTab" class="tab-content">
                     <h3>URL Structure Preview</h3>
                     <div class="url-structure" id="urlStructure"></div>
+                </div>
+                
+                <div id="competitorTab" class="tab-content">
+                    <h3>Competitor Analysis</h3>
+                    <div id="competitorAnalysis">
+                        <p>Upload a competitor's sitemap to see analysis and optimization recommendations.</p>
+                    </div>
                 </div>
             </div>
             
@@ -153,6 +166,7 @@ HTML_TEMPLATE = """
             const formData = new FormData();
             const gscFile = document.getElementById('gscFile').files[0];
             const peFile = document.getElementById('peFile').files[0];
+            const competitorFile = document.getElementById('competitorFile').files[0];
             
             if (!gscFile || !peFile) {
                 showError('Please select both CSV files');
@@ -161,6 +175,10 @@ HTML_TEMPLATE = """
             
             formData.append('gsc_data', gscFile);
             formData.append('pe_data', peFile);
+            
+            if (competitorFile) {
+                formData.append('competitor_sitemap', competitorFile);
+            }
             
             showLoading(true);
             hideError();
@@ -303,6 +321,11 @@ HTML_TEMPLATE = """
                 displayUrlStructure(data.full_data);
             }
             
+            // Display competitor analysis if available
+            if (data.competitor_analysis) {
+                displayCompetitorAnalysis(data.competitor_analysis);
+            }
+            
             document.getElementById('results').classList.add('show');
         }
         
@@ -391,6 +414,67 @@ HTML_TEMPLATE = """
                 
                 structureDiv.appendChild(clusterSection);
             });
+        }
+        
+        function displayCompetitorAnalysis(analysis) {
+            const analysisDiv = document.getElementById('competitorAnalysis');
+            analysisDiv.innerHTML = '';
+            
+            // Competitor Overview
+            const overviewDiv = document.createElement('div');
+            overviewDiv.style.cssText = 'margin-bottom: 20px; padding: 15px; background: #f0f8ff; border: 1px solid #007cba;';
+            overviewDiv.innerHTML = `
+                <h4>Competitor Overview</h4>
+                <p><strong>Total URLs:</strong> ${analysis.total_urls}</p>
+                <p><strong>Average Priority:</strong> ${analysis.avg_priority.toFixed(3)}</p>
+                <p><strong>Content Categories:</strong> ${analysis.categories.join(', ')}</p>
+                <p><strong>Update Frequency:</strong> ${analysis.update_frequency}</p>
+            `;
+            analysisDiv.appendChild(overviewDiv);
+            
+            // Strategy Insights
+            const insightsDiv = document.createElement('div');
+            insightsDiv.style.cssText = 'margin-bottom: 20px; padding: 15px; background: #fff3cd; border: 1px solid #ffc107;';
+            insightsDiv.innerHTML = `
+                <h4>Strategy Insights</h4>
+                <ul>
+                    ${analysis.insights.map(insight => `<li>${insight}</li>`).join('')}
+                </ul>
+            `;
+            analysisDiv.appendChild(insightsDiv);
+            
+            // Optimization Recommendations
+            const recommendationsDiv = document.createElement('div');
+            recommendationsDiv.style.cssText = 'margin-bottom: 20px; padding: 15px; background: #d1ecf1; border: 1px solid #17a2b8;';
+            recommendationsDiv.innerHTML = `
+                <h4>Optimization Recommendations</h4>
+                <ul>
+                    ${analysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                </ul>
+            `;
+            recommendationsDiv.appendChild(recommendationsDiv);
+            
+            // URL Structure Comparison
+            if (analysis.url_structure) {
+                const structureDiv = document.createElement('div');
+                structureDiv.style.cssText = 'margin-bottom: 20px;';
+                structureDiv.innerHTML = `
+                    <h4>URL Structure Analysis</h4>
+                    <div class="url-structure" style="max-height: 300px;">
+                        ${analysis.url_structure.map(category => `
+                            <div class="cluster-section">
+                                <div class="cluster-header">${category.name} (${category.count} URLs)</div>
+                                ${category.sample_urls.map(url => `
+                                    <div class="url-item">
+                                        <div class="url-text">${url}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                analysisDiv.appendChild(structureDiv);
+            }
         }
     </script>
 </body>
