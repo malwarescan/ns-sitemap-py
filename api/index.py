@@ -95,9 +95,9 @@ HTML_TEMPLATE = """
                             <input type="file" id="peFile" name="pe_data" accept=".csv" required>
                         </div>
                         <div class="file-input">
-                            <label for="competitorFile">Competitor Sitemap (Optional - XML)</label>
-                            <input type="file" id="competitorFile" name="competitor_sitemap" accept=".xml">
-                            <small style="color: #666;">Upload a competitor's sitemap to analyze their structure and get optimization insights</small>
+                            <label for="competitorUrl">Competitor Sitemap URL (Optional)</label>
+                            <input type="url" id="competitorUrl" name="competitor_url" placeholder="https://competitor.com/sitemap.xml">
+                            <small style="color: #666;">Enter a competitor's sitemap URL to automatically fetch and analyze their structure</small>
                         </div>
                         <button type="submit" class="btn" id="submitBtn">Process Data</button>
                     </form>
@@ -166,7 +166,7 @@ HTML_TEMPLATE = """
             const formData = new FormData();
             const gscFile = document.getElementById('gscFile').files[0];
             const peFile = document.getElementById('peFile').files[0];
-            const competitorFile = document.getElementById('competitorFile').files[0];
+            const competitorUrl = document.getElementById('competitorUrl').value.trim();
             
             if (!gscFile || !peFile) {
                 showError('Please select both CSV files');
@@ -176,8 +176,8 @@ HTML_TEMPLATE = """
             formData.append('gsc_data', gscFile);
             formData.append('pe_data', peFile);
             
-            if (competitorFile) {
-                formData.append('competitor_sitemap', competitorFile);
+            if (competitorUrl) {
+                formData.append('competitor_url', competitorUrl);
             }
             
             showLoading(true);

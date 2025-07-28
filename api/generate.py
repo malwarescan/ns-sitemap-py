@@ -10,6 +10,7 @@ import cgi
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import re
+import requests
 
 def normalize_url(url: str) -> str:
     """Normalize URL for deduplication."""
@@ -402,7 +403,7 @@ class handler(BaseHTTPRequestHandler):
             
             gsc_file = form['gsc_data']
             pe_file = form['pe_data']
-            competitor_file = form.get('competitor_sitemap') if 'competitor_sitemap' in form else None
+            competitor_url = form.get('competitor_url') if 'competitor_url' in form else None
             
             # Save uploaded files temporarily
             with tempfile.NamedTemporaryFile(mode='w+b', suffix='.csv', delete=False) as gsc_temp:
@@ -413,12 +414,16 @@ class handler(BaseHTTPRequestHandler):
                 pe_temp.write(pe_file.file.read())
                 pe_path = pe_temp.name
             
-            # Save competitor file if provided
-            competitor_path = None
-            if competitor_file:
-                with tempfile.NamedTemporaryFile(mode='w+b', suffix='.xml', delete=False) as comp_temp:
-                    comp_temp.write(competitor_file.file.read())
-                    competitor_path = comp_temp.name
+            # Fetch competitor sitemap if URL provided
+            competitor_xml = None
+            if competitor_url:
+                try:
+                    response = requests.get(competitor_url, timeout=10)
+                    response.raise_for_status()
+                    competitor_xml = response.text
+                except Exception as e:
+                    print(f"Error fetching competitor sitemap: {e}")
+                    competitor_xml = None
             
             try:
                 # Load data
@@ -473,10 +478,8 @@ class handler(BaseHTTPRequestHandler):
                 
                 # Analyze competitor sitemap if provided
                 competitor_analysis = None
-                if competitor_path:
+                if competitor_xml:
                     try:
-                        with open(competitor_path, 'r', encoding='utf-8') as f:
-                            competitor_xml = f.read()
                         competitor_analysis = analyze_competitor_sitemap(competitor_xml)
                     except Exception as e:
                         competitor_analysis = {"error": f"Error analyzing competitor sitemap: {str(e)}"}
@@ -502,8 +505,7 @@ class handler(BaseHTTPRequestHandler):
                 try:
                     os.unlink(gsc_path)
                     os.unlink(pe_path)
-                    if competitor_path:
-                        os.unlink(competitor_path)
+                    # Removed competitor_path cleanup as it's no longer used
                 except:
                     pass
                     
