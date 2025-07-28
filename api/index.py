@@ -32,6 +32,53 @@ HTML_TEMPLATE = """
         .loading { text-align: center; padding: 20px; }
         .error { color: red; margin: 10px 0; }
         .success { color: green; margin: 10px 0; }
+        .tabs { margin: 20px 0; }
+        .tab-buttons { border-bottom: 1px solid #ccc; margin-bottom: 20px; }
+        .tab-button { 
+            background: #f0f0f0; 
+            border: 1px solid #ccc; 
+            border-bottom: none; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            margin-right: 5px; 
+        }
+        .tab-button.active { 
+            background: white; 
+            border-bottom: 1px solid white; 
+            margin-bottom: -1px; 
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .url-structure { 
+            max-height: 400px; 
+            overflow-y: auto; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            background: #f9f9f9; 
+        }
+        .cluster-section { margin-bottom: 20px; }
+        .cluster-header { 
+            background: #e0e0e0; 
+            padding: 8px; 
+            font-weight: bold; 
+            margin-bottom: 10px; 
+        }
+        .url-item { 
+            padding: 5px 10px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .url-item:hover { background: #f0f0f0; }
+        .url-text { flex: 1; }
+        .url-priority { 
+            background: #007cba; 
+            color: white; 
+            padding: 2px 8px; 
+            border-radius: 3px; 
+            font-size: 0.8em; 
+        }
     </style>
 </head>
 <body>
@@ -75,11 +122,25 @@ HTML_TEMPLATE = """
                 <div id="sitemapDownloadsContent"></div>
             </div>
             
-            <h3>Sample Data (Top 10 URLs)</h3>
-            <table class="data-table">
-                <thead><tr><th>URL</th><th>Priority</th><th>Cluster</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr></thead>
-                <tbody id="dataTable"></tbody>
-            </table>
+            <div class="tabs">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="showTab('sample')">Sample Data</button>
+                    <button class="tab-button" onclick="showTab('structure')">URL Structure</button>
+                </div>
+                
+                <div id="sampleTab" class="tab-content active">
+                    <h3>Sample Data (Top 10 URLs)</h3>
+                    <table class="data-table">
+                        <thead><tr><th>URL</th><th>Priority</th><th>Cluster</th><th>Clicks</th><th>Impressions</th><th>CTR</th><th>Position</th></tr></thead>
+                        <tbody id="dataTable"></tbody>
+                    </table>
+                </div>
+                
+                <div id="structureTab" class="tab-content">
+                    <h3>URL Structure Preview</h3>
+                    <div class="url-structure" id="urlStructure"></div>
+                </div>
+            </div>
             
             <div id="fullDataInfo" style="margin-top: 20px; display: none;">
                 <p><strong>Full Data:</strong> <span id="totalUrls">0</span> URLs processed. Download the sitemap files above to get the complete dataset.</p>
@@ -237,6 +298,9 @@ HTML_TEMPLATE = """
             if (data.full_data) {
                 document.getElementById('totalUrls').textContent = data.full_data.length;
                 document.getElementById('fullDataInfo').style.display = 'block';
+                
+                // Display URL structure in the preview tab
+                displayUrlStructure(data.full_data);
             }
             
             document.getElementById('results').classList.add('show');
@@ -252,6 +316,81 @@ HTML_TEMPLATE = """
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
+        }
+        
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        function displayUrlStructure(fullData) {
+            if (!fullData || fullData.length === 0) return;
+            
+            // Group URLs by cluster
+            const clusters = {};
+            fullData.forEach(item => {
+                if (!clusters[item.cluster]) {
+                    clusters[item.cluster] = [];
+                }
+                clusters[item.cluster].push(item);
+            });
+            
+            const structureDiv = document.getElementById('urlStructure');
+            structureDiv.innerHTML = '';
+            
+            // Sort clusters by priority (highest average priority first)
+            const sortedClusters = Object.entries(clusters).sort((a, b) => {
+                const avgA = a[1].reduce((sum, item) => sum + item.priority, 0) / a[1].length;
+                const avgB = b[1].reduce((sum, item) => sum + item.priority, 0) / b[1].length;
+                return avgB - avgA;
+            });
+            
+            sortedClusters.forEach(([clusterName, clusterUrls]) => {
+                const clusterSection = document.createElement('div');
+                clusterSection.className = 'cluster-section';
+                
+                const clusterHeader = document.createElement('div');
+                clusterHeader.className = 'cluster-header';
+                const avgPriority = clusterUrls.reduce((sum, item) => sum + item.priority, 0) / clusterUrls.length;
+                clusterHeader.innerHTML = `
+                    ${clusterName.toUpperCase()} (${clusterUrls.length} URLs, Avg Priority: ${avgPriority.toFixed(3)})
+                `;
+                
+                clusterSection.appendChild(clusterHeader);
+                
+                // Sort URLs within cluster by priority
+                clusterUrls.sort((a, b) => b.priority - a.priority);
+                
+                clusterUrls.forEach(urlItem => {
+                    const urlDiv = document.createElement('div');
+                    urlDiv.className = 'url-item';
+                    
+                    const urlText = document.createElement('div');
+                    urlText.className = 'url-text';
+                    urlText.textContent = urlItem.url;
+                    
+                    const prioritySpan = document.createElement('span');
+                    prioritySpan.className = 'url-priority';
+                    prioritySpan.textContent = urlItem.priority.toFixed(3);
+                    
+                    urlDiv.appendChild(urlText);
+                    urlDiv.appendChild(prioritySpan);
+                    clusterSection.appendChild(urlDiv);
+                });
+                
+                structureDiv.appendChild(clusterSection);
+            });
         }
     </script>
 </body>
