@@ -100,6 +100,7 @@ HTML_TEMPLATE = """
                             <small style="color: #666;">Enter a competitor's sitemap URL to automatically fetch and analyze their structure</small>
                         </div>
                         <button type="submit" class="btn" id="submitBtn">Process Data</button>
+                        <button type="button" class="btn" id="testBtn" onclick="testAPI()" style="margin-left: 10px; background: #28a745;">Test API</button>
                     </form>
                 </div>
     <div id="loading" class="loading" style="display: none;">
@@ -339,6 +340,40 @@ HTML_TEMPLATE = """
             a.click();
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
+        }
+        
+        async function testAPI() {
+            showLoading(true);
+            hideError();
+            hideSuccess();
+            
+            try {
+                const response = await fetch('/api/test', {
+                    method: 'POST'
+                });
+                
+                let result;
+                const contentType = response.headers.get('content-type');
+                
+                if (contentType && contentType.includes('application/json')) {
+                    result = await response.json();
+                } else {
+                    const text = await response.text();
+                    showError('Server returned non-JSON response: ' + text.substring(0, 200));
+                    return;
+                }
+                
+                if (response.ok) {
+                    showSuccess('Test successful! Sample data loaded.');
+                    displayResults(result);
+                } else {
+                    showError(result.error || 'Test failed');
+                }
+            } catch (error) {
+                showError('Test error: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
         }
         
         function showTab(tabName) {

@@ -27,11 +27,16 @@ def load_csv_data(file_path: str, expected_columns: list) -> list:
     """Load data from CSV file."""
     data = []
     try:
+        print(f"Loading CSV from: {file_path}")
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
-            for row in reader:
-                url = row.get('url') or row.get('URL') or row.get('page')
+            print(f"CSV headers: {reader.fieldnames}")
+            
+            for row_num, row in enumerate(reader):
+                # Try different possible URL column names
+                url = row.get('url') or row.get('URL') or row.get('page') or row.get('Page') or row.get('link') or row.get('Link')
                 if not url:
+                    print(f"Row {row_num + 1}: No URL found in columns {list(row.keys())}")
                     continue
                 
                 entry = {'url': url.strip()}
@@ -44,8 +49,14 @@ def load_csv_data(file_path: str, expected_columns: list) -> list:
                     else:
                         entry[col] = 0.0
                 data.append(entry)
+                
+                if row_num < 5:  # Print first 5 rows for debugging
+                    print(f"Row {row_num + 1}: {entry}")
+                    
     except Exception as e:
         print(f"Error loading CSV data: {e}")
+        import traceback
+        traceback.print_exc()
     return data
 
 def calculate_priority(url_entry: dict) -> float:
@@ -430,6 +441,9 @@ class handler(BaseHTTPRequestHandler):
                 gsc_data = load_csv_data(gsc_path, ['clicks', 'impressions', 'ctr', 'position'])
                 pe_data = load_csv_data(pe_path, ['importance', 'depth', 'internal_links', 'health'])
                 
+                print(f"Loaded GSC data: {len(gsc_data)} URLs")
+                print(f"Loaded Page Explorer data: {len(pe_data)} URLs")
+                
                 # Merge and deduplicate
                 merged = defaultdict(dict)
                 for entry in gsc_data:
@@ -439,12 +453,16 @@ class handler(BaseHTTPRequestHandler):
                     norm = normalize_url(entry['url'])
                     merged[norm].update(entry)
                 
+                print(f"Merged data: {len(merged)} unique URLs")
+                
                 result = []
                 for norm_url, data in merged.items():
                     data['url'] = norm_url
                     data['priority'] = calculate_priority(data)
                     data['cluster'] = assign_cluster(norm_url)
                     result.append(data)
+                
+                print(f"Processed result: {len(result)} URLs")
                 
                 # Sort by priority (highest first)
                 result.sort(key=lambda x: x['priority'], reverse=True)
@@ -453,6 +471,8 @@ class handler(BaseHTTPRequestHandler):
                 clusters = defaultdict(list)
                 for item in result:
                     clusters[item['cluster']].append(item)
+                
+                print(f"Clusters created: {list(clusters.keys())}")
                 
                 # Create sitemap XMLs
                 sitemaps = {}
@@ -465,6 +485,8 @@ class handler(BaseHTTPRequestHandler):
                 sitemap_index = create_sitemap_index(clusters)
                 sitemaps["sitemap-index.xml"] = sitemap_index
                 
+                print(f"Created sitemaps: {list(sitemaps.keys())}")
+                
                 # Calculate statistics
                 cluster_stats = {}
                 for cluster_name, cluster_urls in clusters.items():
@@ -476,13 +498,17 @@ class handler(BaseHTTPRequestHandler):
                             'top_priority': max(u['priority'] for u in cluster_urls)
                         }
                 
+                print(f"Cluster stats: {cluster_stats}")
+                
                 # Analyze competitor sitemap if provided
                 competitor_analysis = None
                 if competitor_xml:
                     try:
                         competitor_analysis = analyze_competitor_sitemap(competitor_xml)
+                        print(f"Competitor analysis completed: {competitor_analysis is not None}")
                     except Exception as e:
                         competitor_analysis = {"error": f"Error analyzing competitor sitemap: {str(e)}"}
+                        print(f"Competitor analysis error: {e}")
                 
                 response_data = {
                     "message": "Sitemaps generated successfully",
@@ -498,7 +524,16 @@ class handler(BaseHTTPRequestHandler):
                     "competitor_analysis": competitor_analysis  # Include competitor analysis
                 }
                 
+                print(f"Response data prepared: {len(response_data.get('full_data', []))} URLs")
+                
                 self.wfile.write(json.dumps(response_data).encode())
+                
+            except Exception as e:
+                import traceback
+                error_details = traceback.format_exc()
+                print(f"Error in data processing: {error_details}")
+                response = {"error": f"Data processing error: {str(e)}", "details": error_details}
+                self.wfile.write(json.dumps(response).encode())
                 
             finally:
                 # Clean up temporary files
