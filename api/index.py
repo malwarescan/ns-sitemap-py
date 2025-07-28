@@ -106,6 +106,7 @@ HTML_TEMPLATE = """
     <div id="loading" class="loading" style="display: none;">
         <h3>Processing your data...</h3>
         <p>This may take a few moments.</p>
+        <div id="statusIndicator" style="margin-top: 10px; font-size: 0.9em; color: #666;"></div>
     </div>
     <div id="error" class="error" style="display: none;"></div>
     <div id="success" class="success" style="display: none;"></div>
@@ -164,13 +165,22 @@ HTML_TEMPLATE = """
         document.getElementById('uploadForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            console.log('Form submitted - starting processing...');
+            
             const formData = new FormData();
             const gscFile = document.getElementById('gscFile').files[0];
             const peFile = document.getElementById('peFile').files[0];
             const competitorUrl = document.getElementById('competitorUrl').value.trim();
             
+            console.log('Files selected:', {
+                gscFile: gscFile ? gscFile.name : 'none',
+                peFile: peFile ? peFile.name : 'none',
+                competitorUrl: competitorUrl || 'none'
+            });
+            
             if (!gscFile || !peFile) {
                 showError('Please select both CSV files');
+                console.log('Error: Missing required files');
                 return;
             }
             
@@ -185,10 +195,21 @@ HTML_TEMPLATE = """
             hideError();
             hideSuccess();
             
+            updateStatus('Preparing data...');
+            console.log('Sending request to /api/generate...');
+            
             try {
+                updateStatus('Sending request to server...');
                 const response = await fetch('/api/generate', {
                     method: 'POST',
                     body: formData
+                });
+                
+                updateStatus('Processing response...');
+                console.log('Response received:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    contentType: response.headers.get('content-type')
                 });
                 
                 let result;
@@ -196,28 +217,42 @@ HTML_TEMPLATE = """
                 
                 if (contentType && contentType.includes('application/json')) {
                     result = await response.json();
+                    console.log('JSON response:', result);
                 } else {
                     const text = await response.text();
+                    console.log('Non-JSON response:', text.substring(0, 500));
                     showError('Server returned non-JSON response: ' + text.substring(0, 200));
                     return;
                 }
                 
                 if (response.ok) {
+                    console.log('Success - displaying results');
                     showSuccess(result.message);
                     displayResults(result);
                 } else {
+                    console.log('Error response:', result);
                     showError(result.error || 'An error occurred');
                 }
             } catch (error) {
+                console.error('Network error:', error);
                 showError('Network error: ' + error.message);
             } finally {
                 showLoading(false);
+                console.log('Processing completed');
             }
         });
         
         function showLoading(show) {
             document.getElementById('loading').style.display = show ? 'block' : 'none';
             document.getElementById('submitBtn').disabled = show;
+        }
+        
+        function updateStatus(message) {
+            const statusDiv = document.getElementById('statusIndicator');
+            if (statusDiv) {
+                statusDiv.textContent = message;
+            }
+            console.log('Status:', message);
         }
         
         function showError(message) {
@@ -522,4 +557,4 @@ class handler(BaseHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
         
-        self.wfile.write(HTML_TEMPLATE.encode()) 
+        self.wfile.write(HTML_TEMPLATE.encode())
